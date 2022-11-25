@@ -1,5 +1,8 @@
 - Online News
 - Login penulis
+- Hapus penulis
+- Ubah password penulis
+- Hapus berita khusus yang dibuat penulis
 - Masuk sebagai pengunjung
 
 Berita is consist of
