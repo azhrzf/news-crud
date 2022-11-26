@@ -1,0 +1,18 @@
+- Online News
+- Login penulis
+- Hapus dan ubah berita khusus yang dibuat penulis tertentu
+- Masuk sebagai pengunjung
+
+Berita is consist of
+- News ID (Primary key)
+- Title
+- Date
+- Author ID (Foreign key)
+- Article
+
+Author
+- Author ID (Primary key)
+- Author Name
+- Password
+
+You can visit https://getbootstrap.com/docs/4.3/getting-started/download/ to locally download the files. After downloading the files include addbootstrap.min.css file in the <head> and bootstrap.min.js in the <body> .  Some jQuery functionalities like tabs and dropdowns are dependent on popper.js and jQuery. So, you will need to include jquery.min.js and popper.min.js before you load bootstrap.min.js. 
