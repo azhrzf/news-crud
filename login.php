@@ -16,14 +16,14 @@
     </style>
 </head>
 
-<body class="gardient-bg">
+<body class="dark-bg">
     <div class="h-100 d-flex align-items-center justify-content-center p-5">
-        <div class="container-sm card shadow-lg p-5" style="width: 30rem;">
-            <p class="fs-2 fw-semibold text-center mb-3">Login as Writer</p>
+        <div class="container-sm card shadow-lg text-bg-dark p-5" style="width: 33rem;">
+            <p class="fs-2 fw-semibold text-center mb-3">Login</p>
             <form>
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Writer ID</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Writer Name">
+                    <label for="exampleFormControlInput1" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username">
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Password</label>
@@ -34,7 +34,7 @@
                 </div>
             </form>
             <p class="text-center mt-3">Don't have an account? <a href="registration.php" class="fw-semibold no-decoration">Sign up</a></p>
-            <p class="text-center small-font">Not a writer? <a href="index.php" class="fw-semibold no-decoration">Login as visitor</a></p>
+            <p class="text-center small-font">Not a writer or an admin? <a href="index.php" class="fw-semibold no-decoration">Login as visitor</a></p>
             <footer class="justify-content-center border-top">
                 <span class="mt-3 text-center smaller-font span-space">Developed to fulfill the semester final exam of "Pemrograman Platform Web"</span>
                 <span class="text-center smaller-font span-space">&copy; <?= date("Y"); ?> Azhar Zaidan Fauzi, 20106050022</span>
