@@ -1,10 +1,9 @@
-.gardient-bg {
-    background-color: #0093E9;
-    background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);    
-}
-
 .dark-bg {
     background-color: #16171d;
+}
+
+.rand-bg {
+    margin-top: 200px;
 }
 
 .small-font {
@@ -17,8 +16,38 @@
 
 .no-decoration {
     text-decoration: none;
+    color: skyblue;
+}
+
+.no-decoration-pure {
+    text-decoration: none;
+    color: #f4f1d0;
+}
+
+.no-decoration-pure:hover {
+    color: #919193;
+}
+
+.anti-white {
+    color: #f4f1d0;
+}
+
+.anti-white-a {
+    color: #919193;
+}
+
+.anti-white-a:hover {
+    color: #f4f1d0;
 }
 
 .span-space {
     display: block;
+}
+
+.zoom-hover {
+    transition: 0.4s;
+}
+
+.zoom-hover:hover {
+    transform: scale(0.95);
 }
