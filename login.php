@@ -33,7 +33,7 @@
                     <button class="btn btn-primary mt-2" type="submit">Login</button>
                 </div>
             </form>
-            <p class="text-center mt-3 anti-white">Don't have an account? <a href="registration.php" class="fw-semibold no-decoration">Sign up</a></p>
+            <p class="text-center mt-3 anti-white">Don't have an account? <a href="signup.php" class="fw-semibold no-decoration">Sign up</a></p>
             <p class="text-center small-font anti-white">Not a writer or an admin? <a href="index.php" class="fw-semibold no-decoration">Login as visitor</a></p>
             <footer class="justify-content-center border-top">
                 <span class="mt-3 text-center smaller-font span-space anti-white-a">Developed to fulfill the semester final exam of "Pemrograman Platform Web"</span>
