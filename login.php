@@ -1,3 +1,12 @@
+<?php
+require "conn.php";
+
+if (isset($_SESSION['login']) && isset($_SESSION["username"])) {
+    $_SESSION['needLogout'] = true;
+    header("Location: index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,12 +16,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/original/css/style.css" rel="stylesheet">
     <style>
         html,
         body {
             height: 100%;
         }
-        <?php include "assets/original/css/style.css" ?>
     </style>
 </head>
 
@@ -20,19 +29,20 @@
     <div class="h-100 d-flex align-items-center justify-content-center p-5">
         <div class="container-sm card shadow-lg text-bg-dark p-5" style="width: 33rem;">
             <p class="fs-2 fw-semibold text-center mb-3 anti-white">Login</p>
-            <form>
+            <form action="" method="post" autocomplete="off">
                 <div class="mb-3 anti-white">
                     <label for="exampleFormControlInput1" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username">
+                    <input name="username" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Username">
                 </div>
                 <div class="mb-3 anti-white">
                     <label for="exampleFormControlInput1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password">
+                    <input name="password" type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password">
                 </div>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary mt-2" type="submit">Login</button>
+                    <button name="login" class="btn btn-primary mt-2" type="submit">Login</button>
                 </div>
             </form>
+            <div id="liveAlertPlaceholder"></div>
             <p class="text-center mt-3 anti-white">Don't have an account? <a href="signup.php" class="fw-semibold no-decoration">Sign up</a></p>
             <p class="text-center small-font anti-white">Not a writer or an admin? <a href="index.php" class="fw-semibold no-decoration">Login as visitor</a></p>
             <footer class="justify-content-center border-top">
@@ -43,7 +53,19 @@
     </div>
 
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/original/js/alert.js"></script>
 
 </body>
 
 </html>
+
+<?php
+
+if (isset($_POST["login"])) {
+    if (login($_POST)) {
+        header("Location: index.php");
+    }
+    else {
+        echo "<script>alertJ('Failed to login, check username and password again', 'danger')</script>";
+    }
+}

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark dark-bg sticky-top">
     <div class="container-fluid container-sm py-2">
-        <a class="navbar-brand anti-white py-2" href="#">ON! News</a>
+        <a class="navbar-brand anti-white py-2" href="index.php">ON! News</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

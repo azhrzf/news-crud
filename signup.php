@@ -1,26 +1,5 @@
 <?php
-session_start();
-
 require "conn.php";
-
-if (isset($_POST["signupWriter"])) {
-    if (signup($_POST, 0) > 0) {
-        
-    }
-    else {
-
-    }
-}
-
-else if (isset($_POST["signupAdmin"])) {
-    if (signup($_POST, 1) > 0) {
-
-    }
-    else {
-            
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -32,13 +11,12 @@ else if (isset($_POST["signupAdmin"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign-up</title>
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/original/css/style.css" rel="stylesheet">
     <style>
         html,
         body {
             height: 100%;
         }
-
-        <?php include "assets/original/css/style.css" ?>
     </style>
 </head>
 
@@ -61,12 +39,12 @@ else if (isset($_POST["signupAdmin"])) {
                 </div>
                 <div class="mb-3 anti-white">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input name="comfirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
+                    <input name="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
                 </div>
                 <div>
                     <div class="row g-2">
                         <div class="col-xl-5 d-grid">
-                            <button name="signupWriter" class="btn btn-primary mt-2" type="submit" >Sign-up as a Writer</button>
+                            <button name="signupWriter" class="btn btn-primary mt-2" type="submit">Sign-up as a Writer</button>
                         </div>
                         <div class="col-xl-5 d-grid">
                             <button name="signupAdmin" class="btn btn-info mt-2 text-white" type="submit">Sign-up as an Admin</button>
@@ -82,6 +60,7 @@ else if (isset($_POST["signupAdmin"])) {
                     </div>
                 </div>
             </form>
+            <div id="liveAlertPlaceholder"></div>
             <p class="text-center mt-3 anti-white">Already have an account? <a href="login.php" class="fw-semibold no-decoration">Login</a></p>
             <p class="text-center small-font anti-white">Not a writer or an admin? <a href="index.php" class="fw-semibold no-decoration">Login as visitor</a></p>
             <footer class="justify-content-center border-top">
@@ -96,3 +75,22 @@ else if (isset($_POST["signupAdmin"])) {
 </body>
 
 </html>
+
+<?php
+if (isset($_POST["signupWriter"])) {
+    if (signup($_POST, 0) > 0) {
+        $_SESSION['addedSuccess'] = true;
+        header("Location: login.php");
+    } else {
+        echo "<script>alertJ('Failed to add, check the input again', 'danger')</script>";
+    }
+}
+
+if (isset($_POST["signupAdmin"])) {
+    if (signup($_POST, 1) > 0) {
+        $_SESSION['addedSuccess'] = true;
+        header("Location: login.php");
+    } else {
+        echo "<script>alertJ('Failed to add, check the input again', 'danger')</script>";
+    }
+}

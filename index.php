@@ -11,9 +11,7 @@ require "conn.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online News</title>
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        <?php include "assets/original/css/style.css" ?>
-    </style>
+    <link href="assets/original/css/style.css" rel="stylesheet">
 </head>
 
 <body class="dark-bg">
@@ -23,48 +21,44 @@ require "conn.php";
         <div class="mb-5">
             <div class="row g-2">
                 <div class="col-xl-2 d-grid">
-                    <button type="button" class="btn btn-outline-light py-2">Write new news</button>
+                    <a class="btn btn-outline-light py-2">Write new news</a>
                 </div>
                 <div class="col-xl-2 d-grid">
-                    <button type="button" class="btn btn-outline-danger py-2">Logout</button>
+                    <a class="btn btn-outline-danger py-2" href="logout.php">Logout</a>
                 </div>
                 <div class="col-xl-2 d-grid">
-                    <button type="button" class="btn btn-outline-primary py-2">Login</button>
+                    <a class="btn btn-outline-primary py-2">Login</a>
                 </div>
                 <div class="col-xl-2 d-grid">
-                    <button type="button" class="btn btn-outline-info py-2">Sign-up</button>
+                    <a class="btn btn-outline-info py-2">Sign-up</a>
                 </div>
             </div>
         </div>
+        <div id="liveAlertPlaceholder"></div>
         <div class="mb-5 pt-5">
             <div class="row g-3">
-                <?php for ($i = 0; $i < 20; $i++) : ?>
-                    <div class="col-xl-4 d-grid zoom-hover">
-                        <div class="card text-bg-dark">
-                            <div class="card-img-top" style="background-image: linear-gradient(160deg, rgb(<?= rgbRandom() ?>) 0%, rgb(<?= rgbRandom() ?>) 100%);">
-                                <div class="card-body text-bg-dark rand-bg">
-                                    <h5 class="card-title"><a href="#" class="no-decoration-pure">Card title</a></h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. <a class="no-decoration" href="#">read more</a></p>
-                                    <div>
-                                        <div class="row g-2">
-                                            <div class="col-6 d-grid">
-                                                <a href="#" class="btn btn-outline-success">Edit</a>
-                                            </div>
-                                            <div class="col-6 d-grid">
-                                                <a href="#" class="btn btn-outline-danger">Delete</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endfor; ?>
+                <?php include "assets/original/part/card.php"; ?>
             </div>
         </div>
     </div>
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/original/js/alert.js"></script>
 
 </body>
 
 </html>
+
+<?php
+
+if (isset($_SESSION['needLogout'])) {
+    echo "<script>alertJ('Logout first before login again', 'danger')</script>";
+    unset($_SESSION["needLogout"]);
+} else if (isset($_SESSION['login']) && isset($_SESSION["username"])) {
+    $welcomeName = $_SESSION["username"];
+    echo "<script>alertJ('Login success! Welcome, $welcomeName!', 'success')</script>";
+} else if (isset($_SESSION['notWriter'])) {
+    echo "<script>alertJ('Login first to write!', 'danger')</script>";
+    unset ($_SESSION['notWriter']);
+} else {
+    echo "<script>alertJ('Welcome visitor! If you want to add news, please sign-up or login', 'primary')</script>";
+}
