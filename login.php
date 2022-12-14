@@ -1,7 +1,7 @@
 <?php
 require "conn.php";
 
-if (isset($_SESSION['login']) && isset($_SESSION["username"])) {
+if (isset($_SESSION['login']) && isset($_SESSION["name"])) {
     $_SESSION['needLogout'] = true;
     header("Location: index.php");
 }

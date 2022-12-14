@@ -70,12 +70,9 @@ function login($data)
             if (password_verify($password, $row["password"])) {
                 $_SESSION["login"] = true;
                 foreach ($verifyUsernameRow as $verify) {
-                    $_SESSION["username"] = $verify['username'];
+                    $_SESSION["name"] = $verify['name'];
+                    $_SESSION["isAdmin"] = $verify['admin'] == 1 ? true : false;
                 }
-                $isAdmin = mysqli_query($conn, "SELECT username FROM writer WHERE username = '$username'");
-                $_SESSION["isAdmin"] = $isAdmin === 1 ? true : false;
-                $getUserID = mysqli_query($conn, "SELECT userID FROM writer WHERE username = '$username'");
-                $_SESSION["userID"] = $getUserID;
                 return true;
             } else {
                 "<script>alertJ('Incorrect password', 'danger')</script>";
@@ -88,18 +85,129 @@ function login($data)
     }
 }
 
-function addNews($data, $id)
+function addNews($data, $name)
 {
     global $conn;
 
     $title = inputValidation($data["title"]);
     $date = inputValidation($data["date"]);
-    $userID = inputValidation($id);
     $article = inputValidation($data["article"]);
+    $thumbnail = uploadThumbnail();
 
-    $query = "INSERT INTO writer VALUES ('', '$title', '$date', '$userID', '$article')";
+    if ($thumbnail) {
+        $query = "INSERT INTO news VALUES ('', '$name', '$title', '$date', '$article', '$thumbnail')";
+        
+        mysqli_query($conn, $query);
+    }
 
-    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
+function change($data, $name, $id)
+{
+    global $conn;
+
+    $title = inputValidation($data["title"]);
+    $date = inputValidation($data["date"]);
+    $article = inputValidation($data["article"]);
+    $oldThumbnail = inputValidation($data["oldThumbnail"]);
+
+    $thumbnail = $_FILES['thumbnail']['error'] === 4 ? $oldThumbnail : uploadThumbnail(); 
+
+    if ($thumbnail) {
+        $change = "UPDATE news SET name = '$name', title = '$title', date = '$date', article = '$article', thumbnail = '$thumbnail' WHERE newsID = $id";
+
+        mysqli_query($conn, $change);
+    }
+    else {
+        return false;
+    }
+
+    return mysqli_affected_rows($conn);
+}
+
+function uploadThumbnail()
+{
+    $fileName = $_FILES['thumbnail']['name'];
+    $fileSize = $_FILES['thumbnail']['size'];
+    $error = $_FILES['thumbnail']['error'];
+    $tmpName = $_FILES['thumbnail']['tmp_name'];
+
+    if ($error === 4) {
+        return "random";
+    }
+
+    $validExtension = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
+    $extensionName = explode('.', $fileName);
+    $verivyExtension = strtolower(end($extensionName));
+
+    if (!in_array($verivyExtension, $validExtension)) {
+        echo "<script>alertJ('Invalid image or invalid image extension', 'danger')</script>";
+        return false;
+    }
+
+    if ($fileSize > 2000000) {
+        echo "<script>alertJ('Image size is too large', 'danger')</script>";
+        return false;
+    }
+
+    $newName = uniqid();
+    $newName .= '.';
+    $newName .= $verivyExtension;
+
+    move_uploaded_file($tmpName, 'assets/original/img/' . $newName);
+
+    return $newName;
+}
+
+function changeQuery($id)
+{
+    global $conn;
+
+    $verify = mysqli_query($conn, "SELECT * FROM news WHERE newsID = '$id'");
+
+    if (mysqli_num_rows($verify) === 1) {
+        return query("SELECT * FROM news WHERE newsID = '$id'");
+    } else {
+        return false;
+    }
+}
+
+function search($data)
+{
+    $search = "SELECT * FROM news WHERE
+            name LIKE '%$data%' OR
+            title LIKE '%$data%' OR
+            article LIKE '%$data%' OR
+            date LIKE '%$data%' ORDER BY newsID ASC";
+
+    return query($search);
+}
+
+function notSearch()
+{
+    return query("SELECT * FROM news ORDER BY newsID ASC");
+}
+
+function filterWriter($rightName, $currentName)
+{
+    $endReturn = false;
+
+    $query = query("SELECT * FROM news WHERE name = '$rightName'");
+
+    foreach ($query as $verify) {
+        if ($verify["name"] == $rightName && $verify["name"] == $currentName) {
+            $endReturn = true;
+        }
+    }
+    return $endReturn;
+}
+
+function delete($data)
+{
+    global $conn;
+
+    mysqli_query($conn, $data);
 
     return mysqli_affected_rows($conn);
 }
@@ -130,4 +238,25 @@ function rgbRandom()
     $yakRanSecond = rand(0, 255);
     $yakRanThird = rand(0, 255);
     return "$yakRanFirst, $yakRanSecond, $yakRanThird";
+}
+
+function getDateNow()
+{
+    $date = date("Y") . "-" . date("d") . "-" . date("m");
+    return $date;
+}
+
+function limitText($text, $limit)
+{
+    if (str_word_count($text, 0) > $limit) {
+        $words = str_word_count($text, 2);
+        $pos   = array_keys($words);
+        $text  = substr($text, 0, $pos[$limit]) . '...';
+    }
+    return $text;
+}
+
+function articleSeparator($text)
+{
+    return explode(chr(0x0A), $text);
 }

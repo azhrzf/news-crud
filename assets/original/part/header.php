@@ -10,8 +10,9 @@
                     <a class="nav-link anti-white-a" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" aria-current="page" href="#">About</a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control text-bg-dark border-0 py-2" type="search" placeholder="🔎 Search news/writer" aria-label="Search">
+            <form class="d-flex" role="search" method="POST">
+                <input name="keyword" id="keyword" class="form-control text-bg-dark border-0 py-2" type="text" placeholder="Search news/writer" aria-label="Search">
+                <button class="btn btn-dark border-0 py-2 ms-2" type="submit" name="search">🔎</button>
             </form>
         </div>
     </div>

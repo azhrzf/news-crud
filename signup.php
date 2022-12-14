@@ -80,7 +80,7 @@ require "conn.php";
 if (isset($_POST["signupWriter"])) {
     if (signup($_POST, 0) > 0) {
         $_SESSION['addedSuccess'] = true;
-        header("Location: login.php");
+        echo "<script>window.location.href = 'login.php'</script>";
     } else {
         echo "<script>alertJ('Failed to add, check the input again', 'danger')</script>";
     }
@@ -89,7 +89,7 @@ if (isset($_POST["signupWriter"])) {
 if (isset($_POST["signupAdmin"])) {
     if (signup($_POST, 1) > 0) {
         $_SESSION['addedSuccess'] = true;
-        header("Location: login.php");
+        echo "<script>window.location.href = 'login.php'</script>";
     } else {
         echo "<script>alertJ('Failed to add, check the input again', 'danger')</script>";
     }

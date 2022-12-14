@@ -1,10 +1,27 @@
 <?php
 require "conn.php";
 
-if (!(isset($_SESSION['login'])) && !(isset($_SESSION["username"]))) {
+if (!(isset($_SESSION['login'])) && !(isset($_SESSION["name"]))) {
     $_SESSION['notWriter'] = true;
     header("Location: index.php");
 }
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    if (changeQuery($id)) {
+        $change = changeQuery($id);
+        foreach ($change as $edit) {
+            $editName = $edit["name"];
+            $editTitle = $edit["title"];
+            $editDate = $edit["date"];
+            $editArticle = $edit["article"];
+            $editThumbnail = $edit["thumbnail"];
+        }
+    } else {
+        header("Location: addnews.php");
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -22,52 +39,67 @@ if (!(isset($_SESSION['login'])) && !(isset($_SESSION["username"]))) {
 <body class="dark-bg">
     <?php include "assets/original/part/header.php" ?>
     <div class="container-sm mt-5">
-        <p class="anti-white fs-1">Welcome Azhar Zaidan Fauzi!<span class="span-space">What news will you write this time?</span></p>
+        <p class="anti-white fs-1">Welcome Azhar Zaidan Fauzi! <span class="span-space">What news will you write this time?</span></p>
         <div class="mb-5">
             <div class="row g-2">
                 <div class="col-xl-2 d-grid">
-                    <button type="button" class="btn btn-outline-light py-2">Home</button>
+                    <a href="index.php" class="btn btn-outline-light py-2">Home</a>
                 </div>
                 <div class="col-xl-2 d-grid">
-                    <button type="button" class="btn btn-outline-danger py-2">Logout</button>
+                    <a href="logout.php" class="btn btn-outline-danger py-2">Logout</a>
                 </div>
             </div>
         </div>
         <div id="liveAlertPlaceholder"></div>
         <div class="mb-5 pt-5">
-            <div class="card text-bg-dark">
-                <form class="card-body text-bg-dark p-5" action="" method="post" autocomplete="off">
-                    <div class="row g-3 mb-5">
-                        <div class="col-xl-6 d-grid">
+            <form action="" method="post" autocomplete="off" enctype="multipart/form-data">
+                <div class="row g-5 mb-5">
+                    <div class="col-xl-9 d-grid">
+                        <div>
                             <label for="titleInput" class="form-label">
                                 <h5 class="card-title anti-white">Title</h5>
                             </label>
-                            <input name="title" type="text" class="form-control text-bg-dark" id="titleInput" placeholder="Title">
+                            <input name="title" type="text" class="form-control text-bg-dark" id="titleInput" placeholder="Title" value="<?= isset($editTitle) ? $editTitle : "" ?>" required>
                         </div>
-                        <div class="col-xl-3 d-grid">
+                        <div class="mt-4">
+                            <label for="articleInput" class="form-label">
+                                <h5 class="card-title anti-white">Article</h5>
+                            </label>
+                            <textarea name="article" class="form-control text-bg-dark" id="articleInput" rows="15" placeholder="Write your news here" required><?= isset($editArticle) ? $editArticle : "" ?></textarea>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 px-4">
+                        <div>
                             <label for="dateInput" class="form-label">
                                 <h5 class="card-title anti-white">Date</h5>
                             </label>
-                            <input name="date" type="text" class="form-control text-bg-dark" id="dateInput" value="<?= date('d/m/y') ?>" disabled>
+                            <input name="date" style="display: none;" type="text" class="form-control text-bg-dark" id="dateInput" value="<?= date('l, d/m/Y'); ?>">
+                            <input name="date" type="text" class="form-control text-bg-dark" id="dateInput" value="<?= date('l, d/m/Y'); ?>" disabled>
                         </div>
-                        <div class="col-xl-3 d-grid">
+                        <div class="mt-4">
                             <label for="usernameInput" class="form-label">
                                 <h5 class="card-title anti-white">Writer</h5>
                             </label>
-                            <input name="writer" type="text" class="form-control text-bg-dark" id="usernameInput" value="<?= $_SESSION["username"]; ?>" disabled>
+                            <input type="text" class="form-control text-bg-dark" id="usernameInput" value="<?= isset($editName) ? $editName : $_SESSION["name"] ?>" disabled>
+                        </div>
+                        <div class="mt-4">
+                            <label for="thumbnailInput" class="form-label">
+                                <h5 class="card-title anti-white">Thumbnail</h5>
+                            </label>
+                            <?php if (isset($editThumbnail)) : ?>
+                                <input name="oldThumbnail" style="display: none;" type="text" class="form-control text-bg-dark" value="<?= $editThumbnail ?>">
+                            <?php endif; ?>
+                            <input type="file" class="form-control text-bg-dark" name="thumbnail" id="thumbnailInput">
+                        </div>
+                        <div class="d-grid gap-2 mt-4">
+                            <button name="addnews" class="btn btn-outline-success mt-2" type="submit"><?= isset($editName) ? "Edit" : "Publish"?></button>
+                        </div>
+                        <div class="d-grid gap-2 mt-1">
+                            <a class="btn btn-outline-danger mt-2" href="index.php">Cancel</a>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="articleInput" class="form-label">
-                            <h5 class="card-title anti-white">Article</h5>
-                        </label>
-                        <textarea name="article" class="form-control text-bg-dark" id="articleInput" rows="15"></textarea>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button name="addnews" class="btn btn-success mt-2" type="submit">Publish</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
@@ -77,10 +109,26 @@ if (!(isset($_SESSION['login'])) && !(isset($_SESSION["username"]))) {
 
 </html>
 
-<?php 
+<?php
 
-if (isset($_POST["addnews"])) {
-    if (addNews($_POST, $_SESSION["userID"]) > 0) {
-
-    } 
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    if (changeQuery($id)) {
+        if (isset($_POST["addnews"])) {
+            if (change($_POST, $_SESSION["name"], $id) > 0) {
+                $_SESSION["editNews"] = true;
+            } else {
+                $_SESSION["editNews"] = false;
+            }
+            echo "<script>window.location.href = 'index.php'</script>";
+        }
+    } else {
+        echo "<script>window.location.href = 'addnews.php'</script>";
+    }
+} else if (isset($_POST["addnews"])) {
+    if (addNews($_POST, $_SESSION["name"]) > 0) {
+        echo "<script>alertJ('News has been successfully published!', 'success')</script>";
+    } else {
+        echo "<script>alertJ('The news failed to be published, check the input again!', 'danger')</script>";
+    }
 }

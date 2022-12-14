@@ -51,3 +51,35 @@
 .zoom-hover:hover {
     transform: scale(0.95);
 }
+
+.card-grid {
+    display: grid;
+}
+
+.card-thumbnail {
+    display: grid;
+    grid-template-rows: 4fr 4fr 1fr;
+}
+
+.card-thumbnail>div:first-child, .card-thumbnail-visitor>div:first-child {
+    border-radius: 2% 2% 0 0;
+}
+
+.card-thumbnail-visitor {
+    display: grid;
+    grid-template-rows: 4fr 4fr;
+}
+
+.fill-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.set-img {
+    flex-shrink: 0;
+    min-width: 100%;
+    max-width: 100%;
+}
+
