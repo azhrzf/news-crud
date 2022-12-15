@@ -18,6 +18,12 @@ if (isset($_GET['id'])) {
 } else {
     header("Location: index.php");
 }
+
+if (isset($_POST["search"])) {
+    header("Location: index.php");
+    $search = search($_POST["keyword"]);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -35,30 +41,34 @@ if (isset($_GET['id'])) {
 
 <body class="dark-bg">
     <?php include "assets/original/part/header.php" ?>
-    <div class="container-sm mt-5">
-        <h1 class="anti-white"><?= $title ?></h1>
-        <p class="small-font fs-6" style="color: white;"><?= $name ?> | <?= $date ?></p>
-        <?php if (isset($_SESSION["isAdmin"]) && isset($_SESSION["name"])) : ?>
-            <?php if ($_SESSION["isAdmin"] || filterWriter($_SESSION["name"], $name)) : ?>
-                <div class="mb-3">
-                    <div class="row g-2">
-                        <div class="col-xl-2 d-grid">
-                            <a class="btn btn-outline-success py-2" href="addnews.php?id=<?= $id ?>">Edit</a>
-                        </div>
-                        <div class="col-xl-2 d-grid">
-                            <a class="btn btn-outline-danger py-2" href="delete.php?id=<?= $id ?>">Delete</a>
+    <div class="container-sm mt-5 p-0 bg-dark rounded">
+        <div class="fill-cover roundM">
+            <?php if ($thumbnail != "random") : ?>
+                <img class="set-img" src="assets/original/img/<?= $thumbnail ?>" alt="">
+            <?php endif; ?>
+        </div>
+        <div class="p-5">
+            <h1 class="anti-white"><?= $title ?></h1>
+            <p class="small-font fs-6" style="color: white;"><?= $name ?> | <?= $date ?></p>
+            <?php if (isset($_SESSION["isAdmin"]) && isset($_SESSION["name"])) : ?>
+                <?php if ($_SESSION["isAdmin"] || filterWriter($_SESSION["name"], $name)) : ?>
+                    <div class="mb-3">
+                        <div class="row g-2">
+                            <div class="col-xl-2 d-grid">
+                                <a class="btn btn-outline-success py-2" href="addnews.php?id=<?= $id ?>">Edit</a>
+                            </div>
+                            <div class="col-xl-2 d-grid">
+                                <a class="btn btn-outline-danger py-2" href="delete.php?id=<?= $id ?>">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
             <?php endif; ?>
-        <?php endif; ?>
-        <?php $renderArticle = articleSeparator($article) ?>
-        <?php for ($i = 0; $i < count($renderArticle); $i++) : ?>
-            <p class="text-light"><?= $renderArticle[$i] ?></p>
-        <?php endfor; ?>
-    </div>
-
-    </div>
+            <?php $renderArticle = articleSeparator($article) ?>
+            <?php for ($i = 0; $i < count($renderArticle); $i++) : ?>
+                <p class="text-light"><?= $renderArticle[$i] ?></p>
+            <?php endfor; ?>
+        </div>
     </div>
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
 

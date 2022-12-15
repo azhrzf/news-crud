@@ -51,6 +51,7 @@ if (isset($_POST["search"])) {
     </div>
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/original/js/alert.js"></script>
+    <script src="assets/original/js/height.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,19 @@
 <?php
 session_start();
 
+// CHECK IF DATABASE EXIST 
+
+
 // QUERY FUNCTIONS
+
+// mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Set MySQLi to throw exceptions 
+
+// try {
+//     $connection2 = @mysqli_connect("localhost", "root", "", "online_newsz");
+// } catch (mysqli_sql_exception $e) {
+//     error_log($e->getMessage()); // Log the error manually
+//     die("Unfortunately, the details you entered for connection are incorrect!");
+// }
 
 $conn = mysqli_connect("localhost", "root", "", "online_news");
 
@@ -96,7 +108,7 @@ function addNews($data, $name)
 
     if ($thumbnail) {
         $query = "INSERT INTO news VALUES ('', '$name', '$title', '$date', '$article', '$thumbnail')";
-        
+
         mysqli_query($conn, $query);
     }
 
@@ -112,14 +124,13 @@ function change($data, $name, $id)
     $article = inputValidation($data["article"]);
     $oldThumbnail = inputValidation($data["oldThumbnail"]);
 
-    $thumbnail = $_FILES['thumbnail']['error'] === 4 ? $oldThumbnail : uploadThumbnail(); 
+    $thumbnail = $_FILES['thumbnail']['error'] === 4 ? $oldThumbnail : uploadThumbnail();
 
     if ($thumbnail) {
         $change = "UPDATE news SET name = '$name', title = '$title', date = '$date', article = '$article', thumbnail = '$thumbnail' WHERE newsID = $id";
 
         mysqli_query($conn, $change);
-    }
-    else {
+    } else {
         return false;
     }
 

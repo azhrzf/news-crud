@@ -56,18 +56,8 @@
     display: grid;
 }
 
-.card-thumbnail {
-    display: grid;
-    grid-template-rows: 4fr 4fr 1fr;
-}
-
-.card-thumbnail>div:first-child, .card-thumbnail-visitor>div:first-child {
+.card-thumbnail>div:first-child{
     border-radius: 2% 2% 0 0;
-}
-
-.card-thumbnail-visitor {
-    display: grid;
-    grid-template-rows: 4fr 4fr;
 }
 
 .fill-cover {
@@ -79,7 +69,22 @@
 
 .set-img {
     flex-shrink: 0;
-    min-width: 100%;
     max-width: 100%;
+}
+
+.flex-go-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.flex-go-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.roundM {
+    border-radius: 1% 1% 0 0;
 }
 
