@@ -1,19 +1,33 @@
 <?php
 session_start();
 
+// CHECK IF MYSQL ACTIVE
+try {
+    mysqli_connect("localhost", "root", "");
+}
+catch (Exception $e){
+    echo "<h1>MYSQL-nya BELUM NYALA PAK HEHE..✌️</h1>";
+    die;
+}
+
 // CHECK IF DATABASE EXIST 
+$connCheck = mysqli_connect("localhost", "root", "");
+
+try {
+    empty(mysqli_select_db($connCheck, "online_news"));
+} catch (Exception $e) {
+    $create = "CREATE DATABASE IF NOT EXISTS online_news";
+    $connCheck->query($create);
+
+    $sql = file_get_contents('online_news.sql');
+    $mysqli = new mysqli("localhost", "root", "", "online_news");
+    $mysqli->multi_query($sql);
+
+    header("Location: index.php");
+}
 
 
 // QUERY FUNCTIONS
-
-// mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Set MySQLi to throw exceptions 
-
-// try {
-//     $connection2 = @mysqli_connect("localhost", "root", "", "online_newsz");
-// } catch (mysqli_sql_exception $e) {
-//     error_log($e->getMessage()); // Log the error manually
-//     die("Unfortunately, the details you entered for connection are incorrect!");
-// }
 
 $conn = mysqli_connect("localhost", "root", "", "online_news");
 
@@ -190,14 +204,14 @@ function search($data)
             name LIKE '%$data%' OR
             title LIKE '%$data%' OR
             article LIKE '%$data%' OR
-            date LIKE '%$data%' ORDER BY newsID ASC";
+            date LIKE '%$data%' ORDER BY newsID DESC";
 
     return query($search);
 }
 
 function notSearch()
 {
-    return query("SELECT * FROM news ORDER BY newsID ASC");
+    return query("SELECT * FROM news ORDER BY newsID DESC");
 }
 
 function filterWriter($rightName, $currentName)

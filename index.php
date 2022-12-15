@@ -14,7 +14,7 @@ if (isset($_POST["search"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online News</title>
+    <title>ON! News</title>
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/original/css/style.css" rel="stylesheet">
 </head>
